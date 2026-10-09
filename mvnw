@@ -4,39 +4,27 @@
 # ----------------------------------------------------------------------------
 set -e
 
-[ -z "$MAVEN_HOME" ] || MAVEN_HOME=''
+# Detect working Java Runtime
+if ! java -version >/dev/null 2>&1; then
+    if [ -d "/Applications/IntelliJ IDEA.app/Contents/jbr/Contents/Home" ]; then
+        export JAVA_HOME="/Applications/IntelliJ IDEA.app/Contents/jbr/Contents/Home"
+        export PATH="$JAVA_HOME/bin:$PATH"
+    fi
+fi
 
-case "`uname`" in
-  CYGWIN* ) cygwin=true ;;
-  MINGW* ) mingw=true ;;
-esac
+# Detect Maven if not in PATH
+if ! mvn -version >/dev/null 2>&1; then
+    if [ -x "/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn" ]; then
+        exec "/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/mvn" "$@"
+    elif [ -x "/Applications/Apache NetBeans.app/Contents/Resources/netbeans/java/maven/bin/mvn" ]; then
+        exec "/Applications/Apache NetBeans.app/Contents/Resources/netbeans/java/maven/bin/mvn" "$@"
+    fi
+fi
 
-PRG="$0"
-while [ -h "$PRG" ] ; do
-  ls=`ls -ld "$PRG"`
-  link=`expr "$ls" : '.*-> \(.*\)$'`
-  if expr "$link" : '/.*' > /dev/null; then
-    PRG="$link"
-  else
-    PRG="`dirname "$PRG"`/$link"
-  fi
-done
-SAVED="`pwd`"
-cd "`dirname \"$PRG\"`" >/dev/null
-APP_HOME="`pwd -P`"
-cd "$SAVED" >/dev/null
-
-WRAPPER_JAR="$APP_HOME/.mvn/wrapper/maven-wrapper.jar"
-WRAPPER_PROP="$APP_HOME/.mvn/wrapper/maven-wrapper.properties"
-
-if command -v mvn >/dev/null 2>&1; then
+if mvn -version >/dev/null 2>&1; then
     exec mvn "$@"
 fi
 
-if [ -f "$WRAPPER_JAR" ]; then
-    exec java -jar "$WRAPPER_JAR" "$@"
-fi
-
-echo "Maven ou Java precisam estar instalados no seu ambiente para executar o Maven Wrapper."
-echo "Abra o projeto na sua IDE favorita (IntelliJ IDEA, Eclipse ou VS Code) para compilar e rodar facilmente!"
+echo "Para executar pelo terminal, certifique-se de que o Java e o Maven estejam configurados."
+echo "Ou simplesmente abra a pasta marcasluxo no IntelliJ IDEA e execute a classe MarcasLuxoApplication!"
 exit 1
