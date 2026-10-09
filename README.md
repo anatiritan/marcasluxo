@@ -1,150 +1,92 @@
-# 💎 Marcas de Luxo — API RESTful com Spring Boot
+# 💎 Projeto Java com Spring Boot — Marcas de Luxo
 
-Projeto desenvolvido para a disciplina escolar de Programação / Desenvolvimento Java, implementando um sistema completo de **CRUD (Create, Read, Update, Delete)** para o catálogo e gerenciamento de **Marcas de Luxo mundiais**.
-
-O projeto foi construído seguindo fielmente a arquitetura ensinada no tutorial de referência da instrutora Angélica Weiler (**Javanauta - CRUD Java com Spring Boot 2025**).
+Projeto escolar de introdução ao desenvolvimento de APIs RESTful com Java e Spring Boot, abordando o padrão de arquitetura em camadas e as operações básicas de **CRUD** (Create, Read, Update, Delete) com o tema **Marcas de Luxo**.
 
 ---
 
 ## 🏛️ Tema do Projeto
-Gerenciamento de grifes e marcas de alto padrão (alta costura, alta relojoaria, joalheria, superesportivos e perfumaria). O sistema permite cadastrar novas marcas, consultar informações detalhadas, filtrar por categorias e países, atualizar dados cadastrais e remover registros.
+O projeto gerencia o cadastro simples de **marcas de luxo** (ex: Chanel, Gucci, Rolex).
+Os dados armazenados para cada marca são:
+* `id`: Identificador único no banco de dados (gerado automaticamente)
+* `nome`: Nome da marca (ex: Chanel)
+* `paisOrigem`: País onde a grife nasceu (ex: França)
+* `anoFundacao`: Ano em que foi fundada (ex: 1910)
+* `categoria`: Segmento da marca (ex: Moda, Relojoaria, Alta Costura)
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-* **Java 17+ (JDK 17, 21 ou 23)**
-* **Spring Boot 3.4.x**
-* **Spring Data JPA** (Hibernate ORM)
-* **H2 Database** (Banco de dados em memória para testes rápidos sem necessidade de instalar SGBD)
-* **Lombok** (Para simplificação de código com `@Getter`, `@Setter`, `@Builder`, etc.)
-* **Maven** (Gerenciador de dependências e build)
-* **HTML5 / CSS3 / JavaScript Moderno** (Dashboard visual responsivo incluso em `src/main/resources/static/index.html`)
+* **Java 17+**
+* **Spring Boot 3**
+* **Spring Web** (para criar os endpoints REST)
+* **Spring Data JPA** (para integração com o banco de dados)
+* **H2 Database** (banco de dados em memória para testes)
+* **Maven** (gerenciador de dependências do projeto)
 
 ---
 
-## 📁 Arquitetura do Projeto (Camadas)
-
-A organização das classes segue rigorosamente o padrão em camadas ensinado na aula:
+## 📁 Estrutura das Camadas
 
 ```
-src/main/java/com/marcasluxo/
-│
-├── MarcasLuxoApplication.java                 # Classe de inicialização (Spring Boot)
-│
-├── config/
-│   └── DataLoader.java                        # Pré-popula o banco H2 com marcas famosas ao iniciar
-│
+com.marcasluxo
+├── MarcasLuxoApplication.java                 # Classe principal que inicia o Spring Boot
 ├── controller/
-│   └── MarcaController.java                   # Camada de controle REST (Endpoints HTTP)
-│
+│   └── MarcaController.java                   # Camada Controller (recebe as requisições HTTP)
 ├── business/
-│   └── MarcaService.java                      # Camada de regras de negócio e validações
-│
+│   └── MarcaService.java                      # Camada Service (regras de negócio)
 └── infrastructure/
     ├── entitys/
-    │   └── Marca.java                         # Entidade relacional mapeada com JPA/Hibernate
+    │   └── Marca.java                         # Camada Entity (espelho da tabela no banco)
     └── repository/
-        └── MarcaRepository.java               # Interface de acesso a dados (Spring Data JPA)
+        └── MarcaRepository.java               # Camada Repository (faz o acesso ao banco com JPA)
 ```
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 📡 Endpoints da API (Rotas)
 
-### Opção 1: Pela sua IDE (IntelliJ IDEA, Eclipse ou VS Code)
-1. Abra a pasta `marcasluxo` na sua IDE.
-2. Aguarde o Maven baixar as dependências automaticamente.
-3. Localize o arquivo principal:
-   `src/main/java/com/marcasluxo/MarcasLuxoApplication.java`
-4. Clique com o botão direito e selecione **Run 'MarcasLuxoApplication'**.
-5. A aplicação subirá na porta `8080`.
-
-### Opção 2: Pelo Terminal
-Na pasta do projeto, execute:
-```bash
-mvn spring-boot:run
-```
-*(ou se preferir com o wrapper: `./mvnw spring-boot:run`)*
-
----
-
-## 🖥️ Acessando a Aplicação
-
-Depois de rodar o projeto, abra seu navegador:
-
-1. **Dashboard Visual Completo:**
-   👉 `http://localhost:8080`
-   *(Uma interface espetacular estilo "Dark & Gold" onde você pode testar todo o CRUD visualmente: cadastrar marcas, ver os cards, buscar em tempo real, editar e excluir!)*
-
-2. **Console do Banco H2:**
-   👉 `http://localhost:8080/h2-console`
-   * **JDBC URL:** `jdbc:h2:mem:marcasluxodb`
-   * **User Name:** `sa`
-   * **Password:** *(deixar em branco)*
-   * Clique em **Connect** para visualizar a tabela `MARCAS` e executar SQL diretamente!
-
----
-
-## 📡 Endpoints da API REST
-
-| Método | Endpoint | Descrição |
+| Método HTTP | Rota (URL) | O que faz? |
 |---|---|---|
-| `GET` | `/marcas` | Retorna todas as marcas de luxo cadastradas |
-| `GET` | `/marcas/{id}` | Busca uma marca específica pelo ID |
-| `GET` | `/marcas/busca?nome=Chanel` | Busca uma marca pelo nome |
-| `GET` | `/marcas/categoria/{categoria}` | Filtra marcas por segmento (ex: Alta Relojoaria) |
-| `GET` | `/marcas/pais/{pais}` | Filtra marcas pelo país de origem (ex: França, Itália) |
-| `POST` | `/marcas` | Cadastra uma nova marca de luxo |
-| `PUT` | `/marcas/{id}` | Atualiza os dados de uma marca existente pelo ID |
-| `DELETE` | `/marcas/{id}` | Remove uma marca pelo ID |
+| `POST` | `http://localhost:8080/marcas` | Cadastra uma nova marca (envia JSON) |
+| `GET` | `http://localhost:8080/marcas` | Lista todas as marcas cadastradas |
+| `GET` | `http://localhost:8080/marcas/{id}` | Busca uma marca específica pelo ID |
+| `DELETE` | `http://localhost:8080/marcas/{id}` | Deleta uma marca pelo ID |
 
----
-
-### Exemplo de JSON para Cadastro (`POST /marcas`):
-
+### Exemplo de JSON para cadastrar uma marca no POST:
 ```json
 {
-  "nome": "Balenciaga",
-  "paisOrigem": "Espanha",
-  "anoFundacao": 1919,
-  "categoria": "Alta Costura & Calçados",
-  "faturamentoBilhoes": 2.5,
-  "descricao": "Famosa pelas criações conceituais, alfaiataria inovadora e tênis de luxo icônicos.",
-  "siteOficial": "https://www.balenciaga.com"
+  "nome": "Chanel",
+  "paisOrigem": "França",
+  "anoFundacao": 1910,
+  "categoria": "Alta Costura"
 }
 ```
 
 ---
 
-## 📤 Como Enviar o Projeto para o seu GitHub
+## 🗣️ Roteiro de Apresentação (O que falar para a Professora!)
 
-Para enviar o código para o seu repositório `https://github.com/anatiritan/marcasluxo.git`:
+Se a professora pedir para você explicar o código, use este resumo simples:
 
-```bash
-cd /Users/ra2457043/.gemini/antigravity/scratch/marcasluxo
+1. **Classe `Marca.java` (Entidade):**
+   > *"Professora, aqui está a nossa Entidade. Eu usei a anotação `@Entity` e `@Table(name = "marcas")` para dizer ao Spring que essa classe vai virar uma tabela no banco H2. O `@Id` e `@GeneratedValue` cuidam do ID automático, e criei os atributos do meu tema, construtores, getters e setters."*
 
-# 1. Iniciar o repositório git (já inicializado)
-git init
+2. **Interface `MarcaRepository.java` (Repositório):**
+   > *"Esta é a camada de dados. Eu criei uma interface que estende o `JpaRepository`. Graças ao Spring Data JPA, a gente não precisa escrever comandos SQL na mão; ele já traz métodos como `save()`, `findAll()` e `deleteById()` prontos."*
 
-# 2. Adicionar todos os arquivos
-git add .
+3. **Classe `MarcaService.java` (Serviço):**
+   > *"Aqui fica a camada de negócio (`@Service`). É ela quem chama o repositório para salvar, listar e excluir. Separei essa camada para manter o código organizado e seguir as boas práticas de arquitetura."*
 
-# 3. Criar o commit inicial
-git commit -m "feat: CRUD de Marcas de Luxo com Spring Boot e H2"
-
-# 4. Apontar para o repositório remoto
-git remote add origin https://github.com/anatiritan/marcasluxo.git
-
-# 5. Renomear para a branch main e enviar
-git branch -M main
-git push -u origin main
-```
-
-*(Se o Git solicitar autenticação, use seu Personal Access Token ou faça login com suas credenciais do GitHub).*
+4. **Classe `MarcaController.java` (Controlador):**
+   > *"Por fim, o Controller (`@RestController`) é quem expõe as rotas na web com o `@RequestMapping("/marcas")`. Nele eu criei os métodos `@PostMapping` para cadastrar, `@GetMapping` para listar e buscar por ID, e `@DeleteMapping` para excluir."*
 
 ---
 
-## 👩‍💻 Autora & Créditos
-* **Tema Escolar:** Marcas de Luxo
-* **Autora do Projeto:** Anatiritan
-* **Tutorial de Inspiração:** Angélica Weiler ([Canal Javanauta](https://www.youtube.com/@Javanauta))
+## 🚀 Como Executar o Projeto
+
+1. Abra a pasta do projeto no **IntelliJ IDEA**.
+2. Abra o arquivo `MarcasLuxoApplication.java`.
+3. Clique no botão de **Play verde ▶️**.
+4. Acesse no navegador:
+   * **Listar marcas:** `http://localhost:8080/marcas`
+   * **Console do H2:** `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:marcasluxodb` | User: `sa` | Senha em branco)
