@@ -2,17 +2,19 @@ package com.marcasluxo.config;
 
 import com.marcasluxo.infrastructure.entitys.Marca;
 import com.marcasluxo.infrastructure.repository.MarcaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
     private final MarcaRepository marcaRepository;
+
+    public DataLoader(MarcaRepository marcaRepository) {
+        this.marcaRepository = marcaRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {

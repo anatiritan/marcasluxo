@@ -2,16 +2,18 @@ package com.marcasluxo.business;
 
 import com.marcasluxo.infrastructure.entitys.Marca;
 import com.marcasluxo.infrastructure.repository.MarcaRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class MarcaService {
 
     private final MarcaRepository marcaRepository;
+
+    public MarcaService(MarcaRepository marcaRepository) {
+        this.marcaRepository = marcaRepository;
+    }
 
     public Marca salvarMarca(Marca marca) {
         if (marca.getId() == null && marcaRepository.existsByNome(marca.getNome())) {

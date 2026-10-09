@@ -2,7 +2,6 @@ package com.marcasluxo.controller;
 
 import com.marcasluxo.business.MarcaService;
 import com.marcasluxo.infrastructure.entitys.Marca;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/marcas")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*") // Permite requisições de front-end ou ferramentas externas
 public class MarcaController {
 
     private final MarcaService marcaService;
+
+    public MarcaController(MarcaService marcaService) {
+        this.marcaService = marcaService;
+    }
 
     // CREATE - Salvar nova marca
     @PostMapping

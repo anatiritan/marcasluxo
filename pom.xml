@@ -38,13 +38,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok para redução de boilerplate (Getters, Setters, Construtores, Builder) -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- Starter para Testes Unitários e de Integração -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,14 +51,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
