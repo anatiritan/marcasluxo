@@ -4,37 +4,47 @@ import com.marcasluxo.infrastructure.entitys.Marca;
 import com.marcasluxo.infrastructure.repository.MarcaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-// @Service avisa ao Spring Boot que esta classe contem a logica de negocio da aplicacao
 @Service
 public class MarcaService {
 
-    // Declaramos o repositorio que conversa com o banco de dados
-    private final MarcaRepository marcaRepository;
+    private final MarcaRepository repository;
 
-    // Construtor para injeção de dependência: o proprio Spring Boot instancia e entrega o repositorio aqui
-    public MarcaService(MarcaRepository marcaRepository) {
-        this.marcaRepository = marcaRepository;
+    public MarcaService(MarcaRepository repository) {
+        this.repository = repository;
     }
 
-    // Metodo 1: CREATE / UPDATE - Salva uma nova marca no banco de dados
-    public Marca salvarMarca(Marca marca) {
-        return marcaRepository.save(marca);
+    public void salvarMarca(Marca marca) {
+        repository.saveAndFlush(marca);
     }
 
-    // Metodo 2: READ - Retorna a lista com todas as marcas cadastradas
-    public List<Marca> listarTodasMarcas() {
-        return marcaRepository.findAll();
+    public Marca buscarMarcaPorNomeMarca(String nomeMarca) {
+        return repository.findByNomeMarca(nomeMarca).orElseThrow(
+                () -> new RuntimeException("Nome da marca não encontrado")
+        );
     }
 
-    // Metodo 3: READ - Busca uma marca especifica pelo seu ID
-    public Marca buscarMarcaPorId(Long id) {
-        return marcaRepository.findById(id).orElse(null);
+    public void deletarMarcaPorNome(String nomeMarca) {
+        repository.deleteByNomeMarca(nomeMarca);
     }
 
-    // Metodo 4: DELETE - Remove uma marca do banco pelo ID
-    public void deletarMarcaPorId(Long id) {
-        marcaRepository.deleteById(id);
+    public void atualizarMarcaPorId(Integer id, Marca marca) {
+        Marca marcaEntity = repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Marca não encontrada"));
+
+        Marca marcaAtualizada = Marca.builder()
+                .nomeMarca(marca.getNomeMarca() != null ? marca.getNomeMarca() :
+                        marcaEntity.getNomeMarca())
+                .anoFundacao(marca.getAnoFundacao() != null ? marca.getAnoFundacao() :
+                        marcaEntity.getAnoFundacao())
+                .paisOrigem(marca.getPaisOrigem() != null ? marca.getPaisOrigem() :
+                        marcaEntity.getPaisOrigem())
+                .categoria(marca.getCategoria() != null ? marca.getCategoria() :
+                        marcaEntity.getCategoria())
+                .fundador(marca.getFundador() != null ? marca.getFundador() :
+                        marcaEntity.getFundador())
+                .id(marcaEntity.getId())
+                .build();
+
+        repository.saveAndFlush(marcaAtualizada);
     }
 }
