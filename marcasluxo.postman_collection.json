@@ -1,0 +1,135 @@
+{
+	"info": {
+		"name": "Marcas de Luxo API",
+		"description": "Coleção de testes para a API Spring Boot de Marcas de Luxo (CRUD completo)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Cadastrar Marca (POST)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nomeMarca\": \"Chanel\",\n  \"anoFundacao\": 1910,\n  \"paisOrigem\": \"França\",\n  \"categoria\": \"Alta Costura\",\n  \"fundador\": \"Coco Chanel\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/marca",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"marca"
+					]
+				},
+				"description": "Cadastra uma nova marca no banco de dados."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Buscar Marca por Nome (GET)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/marca?nome=Chanel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"marca"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "Chanel"
+						}
+					]
+				},
+				"description": "Busca os detalhes de uma marca pelo seu nome."
+			},
+			"response": []
+		},
+		{
+			"name": "3. Atualizar Marca por ID (PUT)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"categoria\": \"Alta Costura e Perfumaria\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/marca?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"marca"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Atualiza os campos enviados de uma marca pelo seu ID (campos omitidos mantêm o valor anterior)."
+			},
+			"response": []
+		},
+		{
+			"name": "4. Deletar Marca por Nome (DELETE)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/marca?nome=Chanel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"marca"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "Chanel"
+						}
+					]
+				},
+				"description": "Deleta uma marca do banco de dados pelo seu nome."
+			},
+			"response": []
+		}
+	]
+}
